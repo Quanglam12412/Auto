@@ -144,6 +144,8 @@
             if (!date) {
                 const today = new Date();
                 date = changedate(today);
+            } else {
+                date = changedate(date);
             }
             let time = document.getElementById('timeInput').value;
             if (!time) {
