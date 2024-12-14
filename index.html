@@ -177,7 +177,9 @@
             const imageUrl = canvas.toDataURL('image/png');
             const link = document.createElement('a');
             link.href = imageUrl;
-            link.download = 'canvas-image.png';
+            const timestamp = Date.now();
+            const randomString = Math.random().toString(36).substring(2, 15);
+            link.download = `z${timestamp}_${randomString}.png`;
             link.click();
 
         }
