@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm chữ vào hình ảnh</title>
+    <style>
+        @font-face {
+            font-family: 'Roboto-Regular';
+            src: url('./fonts/Roboto-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="date"],
+        input[type="time"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-right: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .image-wrapper {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        canvas {
+            display: block;
+            margin: 10px auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            max-width: 100%;
+            height: auto;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 10px;
+            }
+
+            button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .image-wrapper {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <label for="dateInput">Chọn ngày:</label>
+        <input type="date" id="dateInput">
+        <label for="timeInput">Chọn thời gian:</label>
+        <input type="time" id="timeInput" step="1">
+        <button onclick="change()">Thay đổi</button>
+        <button onclick="downloadAll()">All</button>
+        <button onclick="downloadImage(1)">1</button>
+        <button onclick="downloadImage(2)">2</button>
+        <button onclick="downloadImage(3)">3</button>
+        <div class="image-wrapper">
+            <canvas id="1"></canvas>
+            <canvas id="2"></canvas>
+            <canvas id="3"></canvas>
+        </div>
+    </div>
+    <script>
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        function changedate(inputDate) {
+            const date = new Date(inputDate);
+            const day = date.getDate();
+            const month = date.getMonth() + 1;
+            const year = date.getFullYear();
+            const formattedDate = `${day}/${month}/${year}`;
+            return formattedDate;
+        }
+        function displayrandom(id) {
+            const totalImages = 10;
+        if(id = 1){
+            totalImages = 20;
+        }
+        if(id = 2){
+            totalImages = 13;
+        }
+        if(id = 3){
+            totalImages = 10;
+        }
+            const randomIndex = Math.floor(Math.random() * totalImages) + 1;
+            const imagePath = `${id}/${id} (${randomIndex}).jpg`;
+            const imgCanvas = document.getElementById(`${id}`);
+            const ctx = imgCanvas.getContext('2d');
+            ctx.font = '58px Roboto-Regular';
+            const image = new Image();
+            image.onload = () => {
+                imgCanvas.width = image.width;
+                imgCanvas.height = image.height;
+                ctx.drawImage(image, 0, 0, image.width, image.height);
+                addTextToImage(id);
+            };
+            image.src = imagePath;
+        }
+
+        function addTextToImage(id) {
+            let date = document.getElementById('dateInput').value;
+            if (!date) {
+                const today = new Date();
+                date = changedate(today);
+            } else {
+                date = changedate(date);
+            }
+            let time = document.getElementById('timeInput').value;
+            if (!time) {
+                if (id == 1) {
+                    time = '21:' + getRandomInt(56, 59) + ':' + getRandomInt(10, 59);
+                } else {
+                    time = '21:' + getRandomInt(46, 59) + ':' + getRandomInt(10, 59);
+                }
+            }
+            const imageCanvas = document.getElementById(id);
+            const ctx = imageCanvas.getContext('2d');
+            ctx.font = '58px Roboto-Regular';
+            ctx.fillStyle = 'white';
+            ctx.lineWidth = 2;
+            let Textarray = [];
+            Textarray[0] = "Đắk Lắk";
+            Textarray[1] = "Thành phố Buôn Ma Thuột";
+            Textarray[2] = "178 Y Jut";
+            Textarray[3] = date + " " + time;
+            Textarray.forEach((text, index) => {
+                const x = imageCanvas.width - ctx.measureText(text).width - 2;
+                const y = imageCanvas.height - 18 - (77 * index);
+
+                ctx.fillText(text, x, y);
+            })
+        }
+        function downloadImage(id) {
+            const canvas = document.getElementById(id);
+            const imageUrl = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.href = imageUrl;
+            link.download = 'canvas-image.png';
+            link.click();
+
+        }
+        function downloadAll() {
+            for (let i = 1; i <= 3; i++) {
+                downloadImage(i);
+            }
+        }
+        function change() {
+            displayrandom(1);
+            displayrandom(2);
+            displayrandom(3);
+        }
+        change();
+    </script>
+</body>
+
+</html>
