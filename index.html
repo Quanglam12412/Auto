@@ -124,15 +124,15 @@
         }
         function displayrandom(id) {
             let totalImages = 10;
-        if(id == 1){
-            totalImages = 11;
-        }
-        if(id == 2){
-            totalImages = 13;
-        }
-        if(id ==3){
-            totalImages = 19;
-        }
+            if (id == 1) {
+                totalImages = 11;
+            }
+            if (id == 2) {
+                totalImages = 13;
+            }
+            if (id == 3) {
+                totalImages = 19;
+            }
             const randomIndex = Math.floor(Math.random() * totalImages) + 1;
             const imagePath = `${id}/${id} (${randomIndex}).jpg`;
             const imgCanvas = document.getElementById(`${id}`);
@@ -186,6 +186,8 @@
             const imageUrl = canvas.toDataURL('image/png');
             const link = document.createElement('a');
             link.href = imageUrl;
+            const timestamp = Date.now();
+            const randomString = Math.random().toString(36).substring(2, 15);
             link.download = `z${timestamp}_${randomString}.png`;
             link.click();
 
