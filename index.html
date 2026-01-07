@@ -256,8 +256,7 @@
 
         function displayrandom(id) {
             let totalImages = 10;
-            // Giữ nguyên logic số lượng ảnh của bạn
-            if (id == 1) totalImages = 11;
+            if (id == 1) totalImages = 34;
             if (id == 2) totalImages = 16;
             if (id == 3) totalImages = 19;
             if (id == 4) totalImages = 18;
@@ -265,7 +264,6 @@
             if (id == 6) totalImages = 11;
 
             const randomIndex = Math.floor(Math.random() * totalImages) + 1;
-            // Đảm bảo đường dẫn ảnh đúng
             const imagePath = `${id}/${id} (${randomIndex}).jpg`;
             
             const imgCanvas = document.getElementById(`${id}`);
@@ -275,8 +273,6 @@
             ctx.clearRect(0, 0, imgCanvas.width, imgCanvas.height);
 
             const image = new Image();
-            // Thêm crossOrigin nếu cần thiết (để tránh lỗi tainted canvas nếu ảnh load từ domain khác)
-            // image.crossOrigin = "Anonymous"; 
 
             image.onload = () => {
                 // Đặt kích thước canvas bằng kích thước thật của ảnh
